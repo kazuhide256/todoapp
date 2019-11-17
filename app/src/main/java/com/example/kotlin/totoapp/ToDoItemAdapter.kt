@@ -11,11 +11,11 @@ import android.widget.TextView
 import android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
 
 class ToDoItemAdapter : BaseAdapter {
-    private var items: List<ToDoItem>? = null
-    private var model: ToDoItemListModel? = null
+    private val items: List<ToDoItem>
+    private val model: ToDoItemListModel
 
-    private var inflater: LayoutInflater? = null
-    private var resourcedId: Int = 0
+    private val inflater: LayoutInflater
+    private val resourcedId: Int
 
     constructor(context: Context, resourcedId: Int, items: List<ToDoItem>, model: ToDoItemListModel) {
         this.inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -27,12 +27,12 @@ class ToDoItemAdapter : BaseAdapter {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var view: View? = null
         if (convertView == null) {
-            view = inflater!!.inflate(resourcedId, parent, false)
+            view = inflater.inflate(resourcedId, parent, false)
         } else {
             view = convertView
         }
 
-        val item = items!![position]
+        val item = items[position]
 
         // テキスト
         val textTextView: TextView = view!!.findViewById(R.id.text)
@@ -47,28 +47,28 @@ class ToDoItemAdapter : BaseAdapter {
         checkBox.tag = item.id
         checkBox.isChecked = item.completed
         checkBox.setOnCheckedChangeListener { v, checked ->
-            model!!.change(v.tag as Long, checked)
+            model.change(v.tag as Long, checked)
         }
 
         // 削除
         val deleteButton: Button = view.findViewById(R.id.button_delete)
         deleteButton.tag = item.id
         deleteButton.setOnClickListener {
-            model!!.delete(it.tag as Long)
+            model.delete(it.tag as Long)
         }
 
         return view
     }
 
     override fun getCount(): Int {
-        return items!!.size
+        return items.size
     }
 
     override fun getItem(position: Int): Any {
-        return items!![position]
+        return items[position]
     }
 
     override fun getItemId(position: Int): Long {
-        return items!![position].id
+        return items[position].id
     }
 }
